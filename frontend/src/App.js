@@ -1,4 +1,6 @@
-/* import logo from './logo.svg';
+/* Default website 
+
+import logo from './logo.svg';
 import './App.css';
 
 function App() {
@@ -24,7 +26,8 @@ function App() {
 
 export default App; */
 
-
+//Simple sign-in for test 
+/*
 import React from 'react';
 import './App.css';
 import SignIn from './SignIn';
@@ -37,4 +40,19 @@ function App() {
   );
 }
 
-export default App;
+export default App; */
+
+//Export SignIn template from https://mui.com/material-ui/getting-started/templates/
+
+import React from 'react';
+import SignInTemplate from './components/SignInTemplate';
+
+function App() {
+  return (
+    <div className="App">
+      <SignInTemplate />
+    </div>
+  );
+}
+
+export default App; 
