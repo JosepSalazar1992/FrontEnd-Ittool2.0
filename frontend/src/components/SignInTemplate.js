@@ -29,13 +29,40 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignInTemplate() {
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    
+    const loginData = {
+      user: data.get('user'),
+    };
+
+    try {
+      const response = await fetch('https://it-tools-local.3pillarglobal.com:5556', {
+        method: 'POST',
+        headers: {
+          'password' : data.get('password'),
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(loginData),
+      });
+
+      if (!response.ok) {
+        throw new Error('Error en la autenticación');
+      }
+
+      const result = await response.json();
+      console.log(result); // handle authentication data 
+
+   
+      localStorage.setItem('authToken', result.token); // store token in local store
+
+
+      window.location.href = '/dashboard'; // move user to other component 
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Login failed, please check your credentials.');
+    }
   };
 
   return (
