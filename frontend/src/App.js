@@ -1,58 +1,31 @@
-/* Default website 
-
-import logo from './logo.svg';
-import './App.css';
-
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
-
-export default App; */
-
-//Simple sign-in for test 
-/*
 import React from 'react';
-import './App.css';
-import SignIn from './SignIn';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import LoginPage from './Components/LoginPage';
+import OnePage from './Components/OnePage';
+import AuthAzure from './Components/AuthAzure';
 
-function App() {
-  return (
-    <div className="App">
-      <SignIn />
-    </div>
-  );
-}
-
-export default App; */
-
-//Export SignIn template from https://mui.com/material-ui/getting-started/templates/
-
-import React from 'react';
-import SignInTemplate from './components/SignInTemplate';
-
-function App() {
-  return (
-    <div className="App">
-      <SignInTemplate />
-    </div>
-  );
-}
-
-export default App; 
+ function App() {
+   const [isAuthenticated, setIsAuthenticated] = React.useState(false);
+   const [token, setToken] = React.useState(null);
+ 
+    const handleLogin = (authToken) => {
+      setIsAuthenticated(true);
+      setToken(authToken);
+      // below it allowed to store the token to keep the session open after load:
+      localStorage.setItem('token', authToken);
+    };
+ 
+   return (
+     <Router>
+       <Routes>
+         {<Route path="/login" element={<LoginPage onLogin={handleLogin} />} />}
+         <Route path="/Auth" element={<AuthAzure/>} />
+         <Route path="/OnePage" element={<OnePage/>} />
+         {<Route path="/home" element={isAuthenticated ? <OnePage /> : <Navigate to="/login" />} />}
+         <Route path="*" element={<Navigate to="/Auth" />} />
+       </Routes>
+     </Router>
+   );
+ }
+ 
+ export default App; 
